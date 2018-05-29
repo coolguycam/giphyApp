@@ -35,6 +35,9 @@
         for (i = 0; i < topics.length; i++) {
             var info = topics[i];
             var btnDiv = $("<button>").text(info);
+            
+            btnDiv.attr("data-day", info);
+            
             $("#btns-appear-here").prepend(btnDiv);
         };
 
