@@ -16,7 +16,7 @@
     <div id="btns-appear-here"></div>
 
     <div class="input-group">
-        <input type="text" class="form-control" id="search" placeholder="Add Anything!">
+        <input type="text" class="form-control" placeholder="Add Anything!">
         <button class="btn btn-default" type="button" id="addBtn">
             <span class="glyphicon glyphicon-search"></span>
         </button>
@@ -40,15 +40,11 @@
             $("#btns-appear-here").prepend(btnDiv);
         };
 
-        // Adds new button to array
-        $("#addBtn").on("click", function () {
-            var newBtn = $("#search").val();
-            topics.push(newBtn);
-        });
-
+        // Runs imageToggle when gif is clicked on
         $(document).on('click', '.gifImage', imageToggle);
+    
 
-        // Runs AJAX to Giphy for 10 gifs
+        // Runs AJAX to Giphy for max 10 gifs
         $(".data").on("click", function () {
 
             $("#gifs-appear-here").empty();
@@ -96,6 +92,19 @@
                     }
                 });
         });
+
+
+
+        // Adds new button to topics array
+        $("#addBtn").on("click", function () {
+            //Gets the value in the text input field
+            var typed = $(".form-control").val().trim();
+            $(".form-control").empty();
+
+            $("#btns-appear-here").append("<button class='data' data-day=" + typed + ">" + typed + "</button>");
+        })
+
+
 
         function imageToggle() {
             //Sets state to represent the data-state of the target gif
