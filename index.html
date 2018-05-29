@@ -16,12 +16,11 @@
     <div id="btns-appear-here"></div>
 
     <div class="input-group">
-        <input type="text" class="form-control" placeholder="Add Anything!">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button" id="addBtn">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </span>
+        <input type="text" class="form-control" id="search" placeholder="Add Anything!">
+        <button class="btn btn-default" type="button" id="addBtn">
+            <span class="glyphicon glyphicon-search"></span>
+        </button>
+
     </div>
 
 
@@ -29,21 +28,28 @@
     </div>
 
     <script type="text/javascript">
-
+        // Creates initial Buttons
         var topics = ["monday", "tuesday", "wednesday"];
 
         for (i = 0; i < topics.length; i++) {
             var info = topics[i];
-            var btnDiv = $("<button>").text(info);
-            
+            var btnDiv = $("<button class='data'>").text(info);
+
             btnDiv.attr("data-day", info);
-            
+
             $("#btns-appear-here").prepend(btnDiv);
         };
 
+        // Adds new button to array
+        $("#addBtn").on("click", function () {
+            var newBtn = $("#search").val();
+            topics.push(newBtn);
+        });
 
+        $(document).on('click', '.gifImage', imageToggle);
 
-        $("button").on("click", function () {
+        // Runs AJAX to Giphy for 10 gifs
+        $(".data").on("click", function () {
 
             $("#gifs-appear-here").empty();
 
@@ -75,11 +81,10 @@
                         var p = $("<p>").text("Rating: " + rating);
 
                         // Creating an image tag
-                        var weekdayImage = $("<img>");
+                        var weekdayImage = $('<img src=' + results[i].images.fixed_height_still.url + ' data-still=' +
+                            results[i].images.fixed_height_still.url + ' data-animate=' +
+                            results[i].images.fixed_height.url + ' data-state="still" class="gifImage">');
 
-                        // Giving the image tag an src attribute of a proprty pulled off the
-                        // result item
-                        weekdayImage.attr("src", results[i].images.fixed_height.url);
 
                         // Appending the paragraph and weekdayImage we created to the "gifDiv" div we created
                         gifDiv.append(p);
@@ -92,6 +97,20 @@
                 });
         });
 
+        function imageToggle() {
+            //Sets state to represent the data-state of the target gif
+            var state = $(this).attr('data-state');
+
+            //Switches the source to the animate/still state depending on what it is currently at
+            if (state == 'still') {
+                $(this).attr('src', $(this).data('animate'));
+                $(this).attr('data-state', 'animate');
+            }
+            else {
+                $(this).attr('src', $(this).data('still'));
+                $(this).attr('data-state', 'still');
+            }
+        }
 
     </script>
 </body>
